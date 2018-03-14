@@ -48,8 +48,6 @@
 
 			{!! Form::close() !!}
 
-				<div class="col-sm-1"></div>
-
 			{!! Form::model($user, ['method'=>'DELETE', 'action'=> ['AdminUsersController@destroy', $user->id]]) !!}
 			
 				<div class="form-group">
