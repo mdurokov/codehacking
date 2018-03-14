@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Category;
+use App\Http\Requests\CategoriesRequest;
+use Illuminate\Support\Facades\Session;
+
 
 use App\Http\Requests;
 
@@ -36,9 +39,11 @@ class AdminCategoriesController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CategoriesRequest $request)
     {
-        return $this->$request->all();
+        $category = Category::Create($request->all());
+        Session::flash('created_category', 'Category ' . $category->name . ' has been created!');
+        return redirect('/admin/categories');
     }
 
     /**
@@ -60,7 +65,8 @@ class AdminCategoriesController extends Controller
      */
     public function edit($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        return view('admin.categories.edit', compact('category'));
     }
 
     /**
@@ -70,9 +76,12 @@ class AdminCategoriesController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(CategoriesRequest $request, $id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->update($request->all());
+        Session::flash('updated_category', 'Category ' . $category->name . ' has been updated!');
+        return redirect('/admin/categories');
     }
 
     /**
@@ -83,6 +92,9 @@ class AdminCategoriesController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $category = Category::findOrFail($id);
+        $category->delete();
+        Session::flash('deleted_category', 'Category ' . $category->name . ' has been deleted!');
+        return redirect('/admin/categories');
     }
 }

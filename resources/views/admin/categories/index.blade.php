@@ -2,6 +2,19 @@
 
 @section('content')
 
+@if(Session::has('created_category'))
+	<p class="bg-success">{{ session('created_category') }}</p>
+@endif
+@if(Session::has('updated_category'))
+	<p class="bg-success">{{ session('updated_category') }}</p>
+@endif
+@if(Session::has('deleted_category'))
+	<p class="bg-danger">{{ session('deleted_category') }}</p>
+@endif
+
+
+
+
 	<h1>Categories</h1>
 
 	<div class="col-sm-6">
@@ -17,6 +30,10 @@
 			</div>
 		
 		{!! Form::close() !!}
+
+		<div class="row">
+			@include('includes.form_error')
+		</div>
 	</div>
 
 	<div class="col-sm-6">
@@ -34,7 +51,7 @@
 				@foreach($categories as $category)
 				<tr>
 					<td>{{ $category->id }}</td>
-					<td>{{ $category->name }}</td>
+					<td><a href="{{ route('admin.categories.edit', $category->id) }}">{{ $category->name }}</a></td>
 					<td>{{ $category->created_at->diffForHumans() }}</td>
 					<td>{{ $category->updated_at->diffForHumans() }}</td>
 				</tr>
@@ -43,5 +60,4 @@
 			</tbody>
 		</table>
 	</div>
-
 @stop
