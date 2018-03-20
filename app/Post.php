@@ -3,8 +3,8 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-use Cviebrock\EloquentSluggable\SluggableInterface;
-use Cviebrock\EloquentSluggable\SluggableTrait;
+use Cviebrock\EloquentSluggable\Sluggable;
+use Cviebrock\EloquentSluggable\SluggableScopeHelpers;
 
 if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // Ignores notices and reports all other kinds... and warnings
@@ -12,16 +12,10 @@ if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
     // error_reporting(E_ALL ^ E_WARNING); // Maybe this is enough
 }
 
-class Post extends Model implements SluggableInterface
+class Post extends Model //implements SluggableInterface
 {
-
-    use SluggableTrait;
- 
-    protected $sluggable = [
-        'build_from' => 'title',
-        'save_to'    => 'slug',
-        'on_update'  => true,
-    ];
+    use Sluggable;
+    use SluggableScopeHelpers;
 
     protected $fillable = [
     	'title',
@@ -30,6 +24,14 @@ class Post extends Model implements SluggableInterface
     	'photo_id',
     	'category_id'
     ];
+
+    public function sluggable(){
+        return [
+            'slug' => [
+                'source' => 'title'
+            ]
+        ];
+    }
 
     public function user(){
     	return $this->belongsTo('App\User');
