@@ -3,9 +3,26 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Cviebrock\EloquentSluggable\SluggableInterface;
+use Cviebrock\EloquentSluggable\SluggableTrait;
 
-class Post extends Model
+if (version_compare(PHP_VERSION, '7.2.0', '>=')) {
+    // Ignores notices and reports all other kinds... and warnings
+    error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
+    // error_reporting(E_ALL ^ E_WARNING); // Maybe this is enough
+}
+
+class Post extends Model implements SluggableInterface
 {
+
+    use SluggableTrait;
+ 
+    protected $sluggable = [
+        'build_from' => 'title',
+        'save_to'    => 'slug',
+        'on_update'  => true,
+    ];
+
     protected $fillable = [
     	'title',
     	'body',
