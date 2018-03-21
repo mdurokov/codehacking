@@ -10,7 +10,7 @@ use App\Http\Requests;
 class AdminMediasController extends Controller
 {
     public function index(){
-    	$photos = Photo::all();
+    	$photos = Photo::paginate(10);
     	return view('admin.medias.index', compact('photos'));
     }
 
@@ -29,6 +29,22 @@ class AdminMediasController extends Controller
     	$photo = Photo::findOrFail($id);
     	unlink(public_path() . $photo->file);
     	$photo->delete();
-    	return redirect('/admin/medias');
+    }
+
+    public function deleteMedia(Request $request){
+        // if(isset($request->delete_single)){
+        //     $this->destroy($request->photo);
+        //     return redirect()->back(); 
+        // }
+        if(isset($request->delete_multiple) && !empty($request->checkBoxArray)){
+            $photos = Photo::findOrFail($request->checkBoxArray);
+            foreach ($photos as $photo) {
+                unlink(public_path() . $photo->file);
+                $photo->delete();
+            }
+            return redirect()->back();
+        } else {
+            return redirect()->back();
+        }
     }
 }

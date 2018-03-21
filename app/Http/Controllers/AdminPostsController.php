@@ -20,9 +20,9 @@ class AdminPostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index($onpage)
     {
-        $posts = Post::paginate(2);
+        $posts = Post::paginate(5);
         return view('admin.posts.index', compact('posts'));
     }
 

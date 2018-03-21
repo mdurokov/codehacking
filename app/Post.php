@@ -48,4 +48,8 @@ class Post extends Model //implements SluggableInterface
     public function comments(){
         return $this->hasMany('App\Comment');
     }
+
+    public function photoPlaceholder(){
+        return "/images/placeholder.png";
+    }
 }

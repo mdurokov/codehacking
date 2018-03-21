@@ -2,12 +2,14 @@
 
 @section('content')
 
+@include('includes.tinyeditor')
+
 	<h1>Edit Post</h1>
 
 	<div class="row">
 
 		<div class="col-sm-3">
-			<img src="{{ $post->photo ? $post->photo->file : "/images/placeholder.png" }}" class="img-responsive img-rounded"></img>
+			<img src="{{ $post->photo ? $post->photo->file : $post->photoPlaceholder() }}" class="img-responsive img-rounded"></img>
 		</div>
 
 		<div class="col-sm-9">
