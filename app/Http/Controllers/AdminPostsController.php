@@ -20,7 +20,7 @@ class AdminPostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index($onpage)
+    public function index()
     {
         $posts = Post::paginate(5);
         return view('admin.posts.index', compact('posts'));
@@ -120,11 +120,5 @@ class AdminPostsController extends Controller
         $post->delete();
         Session::flash('deleted_post', 'Post ' . $post->title . ' deleted!');
         return redirect('/admin/posts');
-    }
-
-    public function post($slug){
-        $post = Post::findBySlugOrFail($slug);
-        $comments = $post->comments()->whereIsActive(1)->get();
-        return view('post', compact('post','comments'));
     }
 }

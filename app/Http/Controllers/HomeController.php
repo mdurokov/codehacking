@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests;
+use App\Post;
+use App\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Carbon;
 
 class HomeController extends Controller
 {
@@ -14,7 +17,7 @@ class HomeController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        
     }
 
     /**
@@ -22,8 +25,18 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
-        return view('home');
+        $posts = Post::paginate(3);
+        $categories = Category::all();
+        return view('front/home', compact('posts', 'categories'));
+    }
+
+    public function post($slug){
+        $post = Post::findBySlugOrFail($slug);
+        $categories = Category::all();
+        $comments = $post->comments()->whereIsActive(1)->get();
+        return view('post', compact('post','comments', 'categories'));
     }
 }
